@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diario Emocional - Mindfulness Laboral</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #83a4d4, #b6fbff);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .entry {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+        }
+        .entry h2 {
+            color: #34495e;
+            margin-top: 0;
+        }
+        .entry p {
+            color: #555;
+            line-height: 1.6;
+        }
+        .entry textarea {
+            width: 100%;
+            height: 150px;
+            font-size: 1rem;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            display: block;
+            margin: 1rem auto;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Diario Emocional</h1>
+        <div class="entry">
+            <h2>Entrada del diario</h2>
+            <textarea id="diaryEntry" placeholder="Escribe aquí tus pensamientos y emociones del día..."></textarea>
+            <button id="saveEntry">Guardar entrada</button>
+        </div>
+        <div class="entry">
+            <h2>Entradas anteriores</h2>
+            <div id="previousEntries"></div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script>
+            <script>
+        // Configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAMNDzpXcpZaFtjqFVk0KugGAPsUyyKUo0",
+            authDomain: "mindfulness-10a1a.firebaseapp.com",
+            projectId: "mindfulness-10a1a",
+            storageBucket: "mindfulness-10a1a.appspot.com",
+            messagingSenderId: "895658477367",
+            appId: "1:895658477367:web:6d34621a5d5d8a91c9f4c1"
+        };
+
+        // Inicializar Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Guardar entrada de diario
+        const saveEntryButton = document.getElementById('saveEntry');
+        const diaryEntryInput = document.getElementById('diaryEntry');
+
+        saveEntryButton.addEventListener('click', async () => {
+            const diaryEntry = diaryEntryInput.value.trim();
+            if (diaryEntry) {
+                try {
+                    await db.collection('diaryEntries').add({
+                        entry: diaryEntry,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    diaryEntryInput.value = '';
+                    alert('Entrada guardada exitosamente');
+                    displayPreviousEntries();
+                } catch (error) {
+                    console.error('Error al guardar la entrada del diario:', error);
+                    alert('Ocurrió un error al guardar la entrada. Por favor, intenta de nuevo.');
+                }
+            } else {
+                alert('Por favor, escribe algo en el diario.');
+            }
+        });
+
+        // Mostrar entradas anteriores
+        async function displayPreviousEntries() {
+            const previousEntriesContainer = document.getElementById('previousEntries');
+            previousEntriesContainer.innerHTML = '';
+
+            try {
+                const querySnapshot = await db.collection('diaryEntries').orderBy('timestamp', 'desc').get();
+                querySnapshot.forEach((doc) => {
+                    const entryElement = document.createElement('div');
+                    entryElement.classList.add('entry');
+                    entryElement.innerHTML = `
+                        <p>${doc.data().entry}</p>
+                        <p>Fecha: ${doc.data().timestamp.toDate().toLocaleString()}</p>
+                    `;
+                    previousEntriesContainer.appendChild(entryElement);
+                });
+            } catch (error) {
+                console.error('Error al cargar las entradas anteriores:', error);
+                alert('Ocurrió un error al cargar las entradas anteriores. Por favor, intenta de nuevo.');
+            }
+        }
+
+        // Cargar entradas anteriores al cargar la página
+        displayPreviousEntries();
+    </script>
+</body>
+</html>
+

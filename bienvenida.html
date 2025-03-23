@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido a Mindfulness Laboral</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #83a4d4, #b6fbff);
+        }
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+        p {
+            color: #34495e;
+            line-height: 1.6;
+        }
+        .menu {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .menu-item {
+            background-color: #3498db;
+            color: white;
+            padding: 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            flex: 1 1 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .menu-item:hover {
+            background-color: #2980b9;
+        }
+        .menu-item i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        #logout {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 2rem;
+            transition: background-color 0.3s;
+        }
+        #logout:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bienvenido a Mindfulness Laboral</h1>
+        <p>Selecciona una opción para comenzar tu jornada de bienestar:</p>
+        <div class="menu">
+            <a href="#" class="menu-item" id="meditacion">
+                <i class="fas fa-om"></i>
+                Meditación guiada
+            </a>
+            <a href="#" class="menu-item" id="ejercicios">
+                <i class="fas fa-dumbbell"></i>
+                Ejercicios de estiramiento
+            </a>
+            <a href="#" class="menu-item" id="respiracion">
+                <i class="fas fa-wind"></i>
+                Técnicas de respiración
+            </a>
+            <a href="#" class="menu-item" id="consejos">
+                <i class="fas fa-lightbulb"></i>
+                Consejos de productividad
+            </a>
+        </div>
+        <button id="logout">Cerrar sesión</button>
+    </div>
+
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+
+    <script>
+        // Configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAMNDzpXcpZaFtjqFVk0KugGAPsUyyKUo0",
+            authDomain: "mindfulness-10a1a.firebaseapp.com",
+            projectId: "mindfulness-10a1a",
+            storageBucket: "mindfulness-10a1a.firebasestorage.app",
+            messagingSenderId: "355352999789",
+            appId: "1:355352999789:web:2d3b41e9c1f68063d40c64"
+        };
+
+        // Inicializar Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Verificar si el usuario está autenticado
+        firebase.auth().onAuthStateChanged((user) => {
+            if (!user) {
+                // Si el usuario no está autenticado, redirigir a la página de inicio
+                window.location.href = 'index.html';
+            }
+        });
+
+        // Manejar el cierre de sesión
+        document.getElementById('logout').addEventListener('click', () => {
+            firebase.auth().signOut().then(() => {
+                // Cierre de sesión exitoso, redirigir a la página de inicio
+                window.location.href = 'index.html';
+            }).catch((error) => {
+                console.error('Error al cerrar sesión:', error);
+            });
+        });
+
+        // Manejar clics en los elementos del menú
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const activity = e.currentTarget.id;
+                switch (activity) {
+                    case 'meditacion':
+                        alert('Iniciando sesión de meditación guiada...');
+                        break;
+                    case 'ejercicios':
+                        alert('Mostrando ejercicios de estiramiento...');
+                        break;
+                    case 'respiracion':
+                        alert('Iniciando técnicas de respiración...');
+                        break;
+                    case 'consejos':
+                        alert('Mostrando consejos de productividad...');
+                        break;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pausas Activas - Mindfulness Laboral</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #83a4d4, #b6fbff);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .exercise {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+        }
+        .exercise h2 {
+            color: #34495e;
+            margin-top: 0;
+        }
+        .exercise p {
+            color: #555;
+            line-height: 1.6;
+        }
+        .timer {
+            text-align: center;
+            font-size: 2rem;
+            margin: 1rem 0;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            display: block;
+            margin: 1rem auto;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #ecf0f1;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        .progress {
+            width: 0;
+            height: 100%;
+            background-color: #2ecc71;
+            transition: width 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pausas Activas</h1>
+        <div class="exercise">
+            <h2>Ejercicio de estiramiento</h2>
+            <p>Este ejercicio te ayudará a estirar los músculos del cuello y hombros, reduciendo la tensión acumulada durante el trabajo.</p>
+            <ol>
+                <li>Siéntate con la espalda recta y los hombros relajados.</li>
+                <li>Inclina lentamente la cabeza hacia un lado, acercando la oreja al hombro.</li>
+                <li>Mantén la posición durante 10 segundos.</li>
+                <li>Vuelve a la posición inicial y repite hacia el otro lado.</li>
+                <li>Realiza 3 repeticiones para cada lado.</li>
+            </ol>
+            <div class="timer" id="timer">00:00</div>
+            <button id="startButton">Iniciar ejercicio</button>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+        </div>
+        <div class="exercise">
+            <h2>Ejercicio de respiración</h2>
+            <p>Este ejercicio de respiración profunda te ayudará a reducir el estrés y aumentar tu concentración.</p>
+            <ol>
+                <li>Siéntate cómodamente con la espalda recta.</li>
+                <li>Inhala lentamente por la nariz, contando hasta 4.</li>
+                <li>Mantén la respiración durante 4 segundos.</li>
+                <li>Exhala lentamente por la boca, contando hasta 6.</li>
+                <li>Repite este ciclo de respiración 5 veces.</li>
+            </ol>
+            <div class="timer" id="timer2">00:00</div>
+            <button id="startButton2">Iniciar ejercicio</button>
+            <div class="progress-bar">
+                <div class="progress" id="progress2"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Ejercicio de estiramiento
+        const timerElement = document.getElementById('timer');
+        const startButton = document.getElementById('startButton');
+        const progressBar = document.getElementById('progress');
+        let interval;
+        let timeRemaining = 60; // 60 segundos
+
+        startButton.addEventListener('click', () => {
+            startButton.disabled = true;
+            interval = setInterval(() => {
+                timeRemaining--;
+                const minutes = Math.floor(timeRemaining / 60);
+                const seconds = timeRemaining % 60;
+                timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                progressBar.style.width = `${(1 - timeRemaining / 60) * 100}%`;
+                if (timeRemaining === 0) {
+                    clearInterval(interval);
+                    alert('¡El ejercicio de estiramiento ha terminado!');
+                    startButton.disabled = false;
+                    timeRemaining = 60;
+                }
+            }, 1000);
+        });
+
+        // Ejercicio de respiración
+        const timerElement2 = document.getElementById('timer2');
+        const startButton2 = document.getElementById('startButton2');
+        const progressBar2 = document.getElementById('progress2');
+        let interval2;
+        let timeRemaining2 = 90; // 90 segundos
+
+        startButton2.addEventListener('click', () => {
+            startButton2.disabled = true;
+            interval2 = setInterval(() => {
+                timeRemaining2--;
+                const minutes = Math.floor(timeRemaining2 / 60);
+                const seconds = timeRemaining2 % 60;
+                timerElement2.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                progressBar2.style.width = `${(1 - timeRemaining2 / 90) * 100}%`;
+                if (timeRemaining2 === 0) {
+                    clearInterval(interval2);
+                    alert('¡El ejercicio de respiración ha terminado!');
+                    startButton2.disabled = false;
+                    timeRemaining2 = 90;
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
+
